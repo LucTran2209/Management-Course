@@ -103,6 +103,7 @@ namespace CMS_MVC.Controllers
             return View();
         }
 
+        // Methed Get
         [HttpGet]
         public async Task<IActionResult> EnrollCourseAsync(int courseId)
         {

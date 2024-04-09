@@ -11,6 +11,11 @@ namespace CMS_MVC.Controllers
         public readonly string url2 = "https://localhost:7175/api/contenttype";
         public readonly string url3 = "https://localhost:7175/api/ContentDetail";
 
+        /// <summary>
+        /// Content detail by courseId
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
         public async Task<IActionResult> IndexAsync(int courseId)
         {
             HttpContext.Session.SetInt32("courseId", courseId);

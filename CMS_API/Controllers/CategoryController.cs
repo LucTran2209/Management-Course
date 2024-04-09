@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CMS_API.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -14,6 +15,10 @@ namespace CMS_API.Controllers
             _context= context;
         }
 
+        /// <summary>
+        /// GetList
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Get()
         {
