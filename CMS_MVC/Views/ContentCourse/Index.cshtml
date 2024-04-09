@@ -1,0 +1,114 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    .course {
+        width: 200px;
+        height: 160px;
+        background: #FFFFFF;
+        justify-content: center;
+        word-wrap: break-word;
+        margin: 20px;
+        border: 1px solid #000; /* Đường viền độ dày 1px, kiểu đường viền solid (đồng đều), màu đen */
+        /* Box shadow */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Hiển thị bóng với độ mờ 10px, màu đen (0, 0, 0), độ trong suốt 0.5 */
+    }
+
+    .imgCourse img {
+        width: 200px;
+        height: 100px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+</style>
+
+
+<div style="width: 95% ; margin: auto">
+    <div class="sub-header" style="height: 140px; margin-top: 60px">
+    </div>
+    <div class="container">
+        <h2>@ViewBag.ListCourse[0].CourseTitle</h2>
+        <!-- Trigger the modal with a button -->
+        <a asp-action="CreateView" asp-controller="ContentCourse">Create</a>
+
+        <div>
+            <a asp-action="ContentDetail" asp-controller="ContentCourse" asp-route-courseId="@Context.Session.GetInt32("courseId")"><img src="~/image/iconcontent/com.png" /> Announcements</a>
+        </div>
+        @foreach (var item in ViewBag.ListContentCourse)
+        {
+            <div>
+                <p>
+                    @if (item.ContentTypeId == 1)
+                    {
+                        <img src="~/image/iconcontent/file.png" /> <a href="@item.Content" download>@item.ContentTitle</a>
+                        <button>Edit</button>
+                        <button onclick="deleteData(@item.CourseContentId)">Delete</button>
+                    }
+                    else if (item.ContentTypeId == 3)
+                    {
+                        <img src="~/image/iconcontent/link.png" /> <a href="@item.Content">@item.ContentTitle</a>
+                        <button>Edit</button>
+                        <button onclick="deleteData(@item.CourseContentId)">Delete</button>
+                    }
+                    else if (item.ContentTypeId == 2)
+                    {
+                        <a>@item.ContentTitle </a> <a asp-action="CreateDetail" asp-controller="ContentDetail" asp-route-contentId="@item.CourseContentId"> Add Item </a>
+                        <ul>
+                            @foreach (var c in ViewBag.ContentDetails)
+                            {
+                                @if (c.CourseContentId == item.CourseContentId)
+                                {
+                                    <li> <img src="~/image/iconcontent/link.png" /> <a href="@c.Detail" download> @c.Title</a>
+                                        <button onclick="deleteData1(@c.ContentDetailId)">Delete</button>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    }
+                </p>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    function deleteData(id) {
+        if (confirm("Do you want to delete this content?")) {
+            $.ajax({
+                url: 'https://localhost:7175/api/ContentCourse?courseContentId=' + id,
+                method: "DELETE",
+                success: response => {
+                    location.reload();
+                },
+                error: err => {
+                    console.log("delete err");
+                },
+            });
+        }
+    }
+
+     function deleteData1(id) {
+        if (confirm("Do you want to delete this content?")) {
+            $.ajax({
+                url: 'https://localhost:7175/api/ContentDetail?id=' + id,
+                method: "DELETE",
+                success: response => {
+                    location.reload();
+                },
+                error: err => {
+                    console.log("delete err");
+                },
+            });
+        }
+
+    }
+</script>

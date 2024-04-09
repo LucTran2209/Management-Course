@@ -1,0 +1,134 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "/Views/Shared/_Layout1.cshtml";
+
+}
+
+<style>
+    /* Reset CSS */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Body */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    /* Container */
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form */
+    form {
+        margin-top: 20px;
+    }
+
+    /* Input fields */
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        transition: border-color 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+        }
+
+    /* Button */
+    button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+
+
+<div style="width: 95% ; margin: auto">
+    <div class="sub-header" style="height: 140px; margin-top: 60px">
+        <h1>CMS - Course Management System</h1>
+    </div>
+    <div class="container">
+        <h2>Create New Course</h2>
+        <form method="post" asp-action="Create" asp-controller="Course">
+            <input type="hidden" class="form-control" name="userId" id="accountId" value="@Context.Session.GetInt32("UserId")" required>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" name="courseTitle" id="title" placeholder="Title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Semester</label>
+                <select class="form-control" name="semester" id="description" required>
+                    <option value="Spring23">Spring23</option>
+                    <option value="Summer23">Summer23</option>
+                    <option value="Fall23">Fall23</option>
+                    <option value="Spring24">Spring24</option>
+                    <option value="Summer24">Summer24</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="timeStart">TimeStart</label>
+                <input type="datetime-local" class="form-control" name="timeStart" id="timeStart" required>
+            </div>
+            <div class="form-group">
+                <label for="timeEnd">TimeEnd</label>
+                <input type="datetime-local" class="form-control" name="timeEnd" id="timeEnd" required>
+            </div>
+            <div class="form-group">
+                <select name="categoryId" class="form-control">
+                    @foreach (var item in ViewBag.Categories)
+                    {
+                        <option value="@item.CategoryId">@item.CategoryName</option>
+                    }
+                </select>
+            </div>
+            <p style="color: green">@Context.Session.GetString("ResultCreate")</p>
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('timeStart').addEventListener('change', function () {
+        var timeStart = new Date(document.getElementById('timeStart').value);
+        var timeEnd = new Date(document.getElementById('timeEnd').value);
+
+        if (timeEnd < timeStart) {
+            alert('TimeEnd must be greater than TimeStart.');
+            document.getElementById('timeEnd').value = null; // Reset timeEnd value
+        }
+    });
+
+    document.getElementById('timeEnd').addEventListener('change', function () {
+        var timeStart = new Date(document.getElementById('timeStart').value);
+        var timeEnd = new Date(document.getElementById('timeEnd').value);
+
+        if (timeEnd < timeStart) {
+            alert('TimeEnd must be greater than TimeStart.');
+            document.getElementById('timeEnd').value = null; // Reset timeEnd value
+        }
+    });
+</script>

@@ -1,0 +1,88 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "/Views/Shared/_Layout1.cshtml";
+}
+
+
+
+<style>
+    .containerCourse {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .course {
+        width: 200px;
+        height: 350px;
+        background: #FFFFFF;
+        justify-content: center;
+        word-wrap: break-word;
+        margin: 20px;
+        border: 1px solid #000; /* Đường viền độ dày 1px, kiểu đường viền solid (đồng đều), màu đen */
+        /* Box shadow */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Hiển thị bóng với độ mờ 10px, màu đen (0, 0, 0), độ trong suốt 0.5 */
+    }
+
+    .imgCourse img {
+        width: 200px;
+        height: 100px;
+    }
+
+</style>
+
+
+
+
+<div style="width: 95% ; margin: auto">
+    <div class="sub-header" style="height: 140px; margin-top: 60px">
+        <h1>CMS - Course Management System</h1>
+    </div>
+
+    <form method="get" asp-controller="Course" asp-action="GetListCourse">
+        <div class="searchFormContainer">
+            <input name="title" value="@Context.Session.GetString("Search")" />
+            <button type="submit"> Go</button>
+        </div>
+
+    </form>
+
+    <h2>  Search Result: @Context.Session.GetInt32("Result")  </h2>
+
+    <div class="containerCourse">
+        @foreach (var item in ViewBag.ListCourse)
+        {
+            <div class="course">
+                <div class="imgCourse">
+                    <img src="~/image/anhtruutuong.jpg" />
+                </div>
+                <div style="text-align:center">
+                    <p> <a href="enrollcourse?courseId=@item.CourseId">@item.CourseTitle - @item.Semester </a></p>
+                    <p><img style="width:20px; height:20px" src="~/image/enroll.png" /></p>
+                </div>
+                <div>
+                    <ul>
+                        <li>Course Creator: @item.CreatorName</li>
+                        <li>
+                            @foreach (var t in item.Teachers)
+                            {
+                                <p>@t</p>
+                            }
+                        </li>
+                    </ul>
+                </div>
+                <p>Category:<a>@item.CategoryTitle</a></p>
+                <div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+</div>
+
+
+<h3>
+    @Context.Session.GetString("Result1")
+</h3>

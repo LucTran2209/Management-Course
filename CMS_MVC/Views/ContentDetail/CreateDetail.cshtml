@@ -1,0 +1,152 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "/Views/Shared/_Layout1.cshtml";
+
+}
+
+
+
+<style>
+    /* Thiết lập kiểu dáng cho form */
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Thiết lập kiểu dáng cho các input */
+    select, textarea, input[type="text"], input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    /* Thiết lập kiểu dáng cho trường chỉ đọc */
+    .readonly {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+    }
+
+    /* Thiết lập kiểu dáng cho nút Submit */
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+    .block1, .block2 {
+        flex: 1; /* Để chia đều không gian giữa các khối */
+        padding: 20px; /* Để tạo khoảng cách bên trong khối */
+        text-align: center; /* Canh giữa nội dung trong khối */
+        box-sizing: border-box; /* Đảm bảo kích thước của khối bao gồm cả border và padding */
+    }
+</style>
+
+<div class="sub-header" style="height: 140px; margin-top: 60px">
+
+    <div style="display: flex;">
+        <div class="block1" style="border-bottom: 3px solid black;border-right: 1px solid black; "></div>
+        <div class="block2" style="border-bottom: 3px solid red;"></div>
+    </div>
+
+    <h1>CMS - Course Management System</h1>
+</div>
+
+<form id="contentForm" method="post" asp-action="Create" asp-controller="ContentDetail">
+    <div>
+        <input type="hidden" id="contentTypeId" name="courseContentId" value="@ViewBag.ContentId">
+    </div>
+    <div>
+        <label for="contentType">Title</label>
+        <input type="text" id="title" name="title"  required>
+    </div>
+    <div>
+        <label for="contentType">Content Type:</label>
+        <select id="contentType" name="contentTypeId" required onchange="toggleContentInput()">
+            <option value="1">
+                File
+            </option> 
+            <option value="3">
+                Link
+            </option>
+        </select>
+    </div>
+    <div id="contentTextInput">
+        <label for="content">Content:</label>
+        <textarea id="content" name="detail" rows="4"></textarea>
+    </div>
+    <div id="contentFileInput" style="display:none;">
+        <label for="contentFile">File:</label>
+        <input type="file" id="contentFile" name="contentFile" accept=".txt,.pdf,.doc,.docx" onchange="displayFilePath()">
+    </div>
+
+    <div id="contentFilePath" style="display:none;">
+        <label for="contentFilePath">File Path:</label>
+        <input type="text" name="contentPath" id="contentFilePathReadOnly" class="readonly" readonly>
+    </div>
+    <div>
+        <input type="submit" value="Submit">
+    </div>
+</form>
+
+<script>
+    function toggleContentInput() {
+        var contentTypeSelect = document.getElementById("contentType");
+        var contentTextInput = document.getElementById("contentTextInput");
+        var contentFileInput = document.getElementById("contentFileInput");
+        var contentFilePath = document.getElementById("contentFilePath");
+
+        if (contentTypeSelect.value == 3) {
+            contentTextInput.style.display = "block";
+            contentFileInput.style.display = "none";
+            contentFilePath.style.display = "none";
+        } else if (contentTypeSelect.value == 1) {
+            contentTextInput.style.display = "none";
+            contentFileInput.style.display = "block";
+            contentFilePath.style.display = "block";
+        } else {
+            contentTextInput.style.display = "block";
+            contentFileInput.style.display = "none";
+            contentFilePath.style.display = "none";
+        }
+    }
+
+    function displayFilePath() {
+        var fileInput = document.getElementById("contentFile");
+        var filePathInput = document.getElementById("contentFilePathReadOnly");
+
+        // Kiểm tra xem đã chọn file hay chưa
+        if (fileInput.files.length > 0) {
+            // Lấy đường dẫn của file đã chọn
+            var filePath = fileInput.files[0].name;
+
+            // Hiển thị đường dẫn lên trường nhập text
+            filePathInput.value = filePath;
+        } else {
+            // Nếu không có file nào được chọn, đặt giá trị trống cho trường nhập text
+            filePathInput.value = '';
+        }
+    }
+</script>
